@@ -3,7 +3,7 @@ package log
 import (
 	"fmt"
 	api "github.com/c0llinn/prolog/api/v1"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 	"os"
 	"path"
 )

@@ -3,3 +3,6 @@ compile:
 
 test:
 	go test -race ./...
+
+start_server:
+	go run cmd/server/main.go --port 8080 --dir /var/prolog

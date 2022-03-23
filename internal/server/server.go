@@ -4,6 +4,7 @@ import (
 	"context"
 	api "github.com/c0llinn/prolog/api/v1"
 	"google.golang.org/grpc"
+	"log"
 )
 
 type CommitLog interface {
@@ -23,7 +24,7 @@ type grpcServer struct {
 }
 
 func NewGRPCServer(config *Config) (*grpc.Server, error) {
-	grsv := grpc.NewServer()
+	grsv := grpc.NewServer(grpc.UnaryInterceptor(logInterceptor))
 
 	srv, err := newGrpcServer(config)
 	if err != nil {
@@ -32,6 +33,17 @@ func NewGRPCServer(config *Config) (*grpc.Server, error) {
 
 	api.RegisterLogServer(grsv, srv)
 	return grsv, nil
+}
+
+func logInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	log.Printf("Recieved new request for %s", info.FullMethod)
+
+	res, err := handler(ctx, req)
+	if err != nil {
+		log.Printf("An error occurred when processing the request: %v", err)
+	}
+
+	return res, err
 }
 
 func newGrpcServer(config *Config) (srv *grpcServer, err error) {

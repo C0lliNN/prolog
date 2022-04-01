@@ -1,0 +1,16 @@
+{
+  "CN": "Prolog from Collin",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "BR",
+      "L": "Campos dos Goytacazes",
+      "ST": "Rio de Janeiro",
+      "O": "RCTM",
+      "OU": "Board"
+    }
+  ]
+}

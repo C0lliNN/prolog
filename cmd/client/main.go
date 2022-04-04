@@ -5,8 +5,9 @@ import (
 	"flag"
 	"fmt"
 	api "github.com/c0llinn/prolog/api/v1"
+	"github.com/c0llinn/prolog/internal/config"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 	"log"
 	"os"
 	"strconv"
@@ -21,7 +22,17 @@ var (
 func main() {
 	flag.Parse()
 
-	conn, err := grpc.Dial(*uri, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	tlsConfig, err := config.SetupTLSConfig(config.TLSConfig{
+		CertFile: config.RootClientCertFile,
+		KeyFile:  config.RootClientKeyFile,
+		CAFile:   config.CAFile,
+		Server:   false,
+	})
+	if err != nil {
+		log.Fatalf("could not create tls config: %s", err)
+	}
+
+	conn, err := grpc.Dial(*uri, grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig)))
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}

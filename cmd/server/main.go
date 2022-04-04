@@ -3,8 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/c0llinn/prolog/internal/auth"
+	"github.com/c0llinn/prolog/internal/config"
 	"github.com/c0llinn/prolog/internal/log"
 	"github.com/c0llinn/prolog/internal/server"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	defaultlog "log"
 	"net"
 )
@@ -20,19 +24,30 @@ var (
 func main() {
 	flag.Parse()
 
-	config := createLogConfig()
-
-	l, err := log.NewLog(*dir, config)
-	if err != nil {
-		defaultlog.Fatal(err)
-	}
-
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
 		defaultlog.Fatal(err)
 	}
 
-	srv, err := server.NewGRPCServer(&server.Config{CommitLog: l})
+	logConfig := createLogConfig()
+
+	l, err := log.NewLog(*dir, logConfig)
+	if err != nil {
+		defaultlog.Fatal(err)
+	}
+	
+	serverConfig := &server.Config{
+		CommitLog:  l,
+		Authorizer: auth.New(config.ACLModelFile, config.ACLPolicyFile),
+	}
+	serverTLSConfig, err := config.SetupTLSConfig(config.TLSConfig{
+		CertFile: config.ServerCertFile,
+		KeyFile:  config.ServerKeyFile,
+		CAFile:   config.CAFile,
+		Server:   true,
+	})
+
+	srv, err := server.NewGRPCServer(serverConfig, grpc.Creds(credentials.NewTLS(serverTLSConfig)))
 	if err != nil {
 		defaultlog.Fatal(err)
 	}

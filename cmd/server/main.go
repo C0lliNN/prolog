@@ -7,9 +7,9 @@ import (
 	"github.com/c0llinn/prolog/internal/config"
 	"github.com/c0llinn/prolog/internal/log"
 	"github.com/c0llinn/prolog/internal/server"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	defaultlog "log"
 	"net"
 )
 
@@ -23,19 +23,21 @@ var (
 
 func main() {
 	flag.Parse()
+	logger, _ := zap.NewDevelopment()
+	logger = logger.Named("server")
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
 	if err != nil {
-		defaultlog.Fatal(err)
+		logger.Fatal(err.Error())
 	}
 
 	logConfig := createLogConfig()
 
 	l, err := log.NewLog(*dir, logConfig)
 	if err != nil {
-		defaultlog.Fatal(err)
+		logger.Fatal(err.Error())
 	}
-	
+
 	serverConfig := &server.Config{
 		CommitLog:  l,
 		Authorizer: auth.New(config.ACLModelFile, config.ACLPolicyFile),
@@ -49,11 +51,11 @@ func main() {
 
 	srv, err := server.NewGRPCServer(serverConfig, grpc.Creds(credentials.NewTLS(serverTLSConfig)))
 	if err != nil {
-		defaultlog.Fatal(err)
+		logger.Fatal(err.Error())
 	}
 
-	defaultlog.Print("gRPC server starting at port ", *port)
-	defaultlog.Fatal(srv.Serve(lis))
+	logger.Info(fmt.Sprintf("gRPC server starting at port %d", *port))
+	logger.Fatal(srv.Serve(lis).Error())
 }
 
 func createLogConfig() log.Config {

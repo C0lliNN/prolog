@@ -101,7 +101,7 @@ func setupTest(t *testing.T, fn func(*Config)) (
 
 	serverCreds := credentials.NewTLS(serverTLSConfig)
 
-	dir, err := ioutil.TempDir("", "server-test")
+	dir, err := ioutil.TempDir("", "prolog-test")
 	require.NoError(t, err)
 	defer os.RemoveAll(dir)
 

@@ -127,7 +127,7 @@ func (c *logClient) GetServers(ctx context.Context, in *GetServersRequest, opts 
 	return out, nil
 }
 
-// LogServer is the server API for Log service.
+// LogServer is the prolog API for Log service.
 // All implementations must embed UnimplementedLogServer
 // for forward compatibility
 type LogServer interface {

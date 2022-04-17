@@ -54,7 +54,7 @@ type grpcServer struct {
 
 func NewGRPCServer(config *Config, opts ...grpc.ServerOption) (*grpc.Server, error) {
 	logger, _ := zap.NewDevelopment()
-	logger = logger.Named("server")
+	logger = logger.Named("prolog")
 
 	zapOpts := []grpc_zap.Option{
 		grpc_zap.WithDurationField(func(duration time.Duration) zapcore.Field {

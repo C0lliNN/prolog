@@ -7,8 +7,8 @@ import (
 
 var (
 	CAFile         = configFile("ca.pem")
-	ServerCertFile = configFile("server.pem")
-	ServerKeyFile  = configFile("server-key.pem")
+	ServerCertFile = configFile("prolog.pem")
+	ServerKeyFile  = configFile("prolog-key.pem")
 
 	RootClientCertFile   = configFile("root-client.pem")
 	RootClientKeyFile    = configFile("root-client-key.pem")

@@ -61,5 +61,7 @@ compile:
 		--go-grpc_opt=paths=source_relative \
 		--proto_path=.
 
-start_server:
-	go run cmd/server/main.go --port 8080 --dir /var/prolog
+TAG ?= 0.0.1
+
+build-docker:
+	docker build -t github.com/c0llinn/prolog:$(TAG) .

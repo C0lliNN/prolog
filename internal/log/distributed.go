@@ -175,11 +175,11 @@ func (l *DistributedLog) Join(id, addr string) error {
 	for _, srv := range configFuture.Configuration().Servers {
 		if srv.ID == serverID || srv.Address == serverAddr {
 			if srv.ID == serverID && srv.Address == serverAddr {
-				// server has already joined
+				// prolog has already joined
 				return nil
 			}
 
-			// remove the existing server
+			// remove the existing prolog
 			removeFuture := l.raft.RemoveServer(serverID, 0, 0)
 			if err := removeFuture.Error(); err != nil {
 				return err

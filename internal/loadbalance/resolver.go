@@ -66,7 +66,7 @@ func (r *Resolver) ResolveNow(resolver.ResolveNowOptions) {
 	ctx := context.Background()
 	res, err := client.GetServers(ctx, &api.GetServersRequest{})
 	if err != nil {
-		r.logger.Error("failed to resolve server", zap.Error(err))
+		r.logger.Error("failed to resolve prolog", zap.Error(err))
 		return
 	}
 

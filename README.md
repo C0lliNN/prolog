@@ -1,11 +1,21 @@
 # Prolog
-A Logging server.
+A Logging service created while reading the book 'Distributed Services with Go' from Travis Jeffery.
 
-## How to test manually
-1. Make init
-2. Start the server running `gencert`
-2. Start the server running `start_everything`
-3. Append a new log record using `go run cmd/client/main.go append 'Hello World!'`
-4. Read the inserted record using `go run cmd/client/main.go read 1`
+## Installation
+* Go 1.17+ necessary
+* Run `go get ./...`
+* [Install Protocol Buffer Compiler](https://grpc.io/docs/protoc-installation/)
+* Run `go install google.golang.org/protobuf/cmd/protoc-gen-go@latest`
+* Run `go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest`
+* Run `go get github.com/cloudflare/cfssl/cmd/cfssl`
+* Run `go get github.com/cloudflare/cfssl/cmd/cfssljson`
+* Run `make init`
+* Run `make gencert`
 
-OBS: Make sure you have created the directory `/var/prolog` with read/write before execute `make start`
+## How to run tests
+```bash
+make test
+```
+
+## How to run it locally
+TODO

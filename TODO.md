@@ -9,4 +9,5 @@
 * [x] How to log every request using grpc zap log
 * [x] Format code
 * [x] Review Service Discovery Chapter, looking for cool testing strategy, ways to bootstrapping an app, wrappers, etc...
+* [x] Define installation steps (Make init, go mod download)
 * [ ] Review the architecture accordingly with Clean Architecture and Hexagonal Architecture

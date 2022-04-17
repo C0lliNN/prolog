@@ -24,10 +24,7 @@ func (p *Picker) Build(buildInfo base.PickerBuildInfo) balancer.Picker {
 
 	var followers []balancer.SubConn
 	for sc, scInfo := range buildInfo.ReadySCs {
-		isLeader := scInfo.
-			Address.
-			Attributes.
-			Value("is_leader").(bool)
+		isLeader := scInfo.Address.Attributes.Value("is_leader").(bool)
 		if isLeader {
 			p.leader = sc
 			continue
@@ -41,10 +38,10 @@ func (p *Picker) Build(buildInfo base.PickerBuildInfo) balancer.Picker {
 
 var _ balancer.Picker = (*Picker)(nil)
 
-func (p *Picker) Pick(info balancer.PickInfo) (
-	balancer.PickResult, error) {
+func (p *Picker) Pick(info balancer.PickInfo) (balancer.PickResult, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
+
 	var result balancer.PickResult
 	if strings.Contains(info.FullMethodName, "Produce") || len(p.followers) == 0 {
 		result.SubConn = p.leader

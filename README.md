@@ -18,6 +18,3 @@ A Logging service created while reading the book 'Distributed Services with Go' 
 ```bash
 make test
 ```
-
-## How to run it locally
-TODO
